@@ -1,0 +1,11 @@
+#root {
+  margin: 0 auto;
+  text-align: center;
+  direction: rtl;
+}
+
+ input:checked  ~ .answer{
+  height:fit-content;
+  margin-top:7px;
+  display:block;
+}
