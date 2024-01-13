@@ -40,7 +40,7 @@ const FooterComponent = () => {
                         </ul>
                     </section>
 
-                    <sectoin className='text-gray-400 font-bold text-right min-w-[160px] '>
+                    <section className='text-gray-400 font-bold text-right min-w-[160px] '>
                         <ul className='max-md:my-8'>
                             <li><h2 className='text-2xl text-gray-300 pb-10 max-md:pb-5'> سوالات متداول </h2></li>
                             <li> چگونه کار می کنیم؟ </li>
@@ -48,7 +48,7 @@ const FooterComponent = () => {
                             <li> تاریخ ما </li>
                             <li> چگونه با ما مشورت کنیم؟ </li>
                         </ul>
-                    </sectoin>
+                    </section>
 
                     <section className='max-w-[700px] min-w-[400px] '>
                         <h3 className='text-gray-300 text-2xl font-bold text-right'>

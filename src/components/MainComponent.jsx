@@ -1,5 +1,6 @@
 // MainComponent.jsx
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom'; 
 import axios from 'axios';
 import PostCardComponent from './PostCardComponent.jsx';
 import SmallPostCardComponent from './SmallPostCardComponent.jsx';
@@ -67,17 +68,18 @@ const MainComponent = () => {
             <main className="flex max-xl:block flex-row-reverse justify-center px-6 gap-5 mt-24 max-xmd:mt-10">
                 {/* postcards part */}
                 <article className='max-w-[885px] gap-5 grid grid-cols-2 max-md:grid-cols-1  max-xl:mx-auto'>
-                    {filteredProducts.map(product => (
-                        <PostCardComponent
-                            key={product.id}
-                            title={product.title}
-                            description={product.description}
-                            price={product.price}
-                            category={product.category}
-                            thumbnail={product.thumbnailUrl}
-                        />
-                    ))}
-                </article>
+          {filteredProducts.map(product => (
+            <Link key={product.id} to={`/post/${product.id}`}>
+              <PostCardComponent
+                title={product.title}
+                description={product.description}
+                price={product.price}
+                category={product.category}
+                thumbnail={product.thumbnailUrl}
+              />
+            </Link>
+          ))}
+        </article>
 
                 {/* sidebar part */}
                 <article className='min-w-[367px] max-w-[367px] max-xl:max-w-full max-xl:px-14  max-xmd:px-0 max-xl:mt-14'>
