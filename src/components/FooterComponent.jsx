@@ -1,5 +1,4 @@
 // FooterComponent.jsx //
-
 import React from 'react';
 
 const FooterComponent = () => {

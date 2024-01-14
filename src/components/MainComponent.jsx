@@ -84,12 +84,13 @@ const MainComponent = () => {
                 {/* sidebar part */}
                 <article className='min-w-[367px] max-w-[367px] max-xl:max-w-full max-xl:px-14  max-xmd:px-0 max-xl:mt-14'>
                     <h2 className='w-full text-right text-2xl font-semibold '>جستجو</h2>
+                    {/* searching part */}
                     <div className='flex mt-10'>
-                        <div className='px-2'>
+                        <button type='button' className='px-2'>
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M15.8087 18.1083C14.1669 19.3735 12.1194 20.1243 9.89908 20.1243C4.49649 20.1243 0.116821 15.6788 0.116821 10.195C0.116821 4.71115 4.49649 0.265625 9.89908 0.265625C15.3017 0.265625 19.6813 4.71115 19.6813 10.195C19.6813 12.4487 18.9416 14.527 17.6952 16.1935L22.8478 21.4236C23.3687 21.9524 23.3687 22.8097 22.8478 23.3384C22.3269 23.8672 21.4823 23.8672 20.9613 23.3384L15.8087 18.1083ZM17.0134 10.195C17.0134 14.1832 13.8282 17.4163 9.89908 17.4163C5.96992 17.4163 2.78471 14.1832 2.78471 10.195C2.78471 6.20674 5.96992 2.97363 9.89908 2.97363C13.8282 2.97363 17.0134 6.20674 17.0134 10.195Z" fill="#000" />
                             </svg>
-                        </div>
+                        </button>
                         <input placeholder="اینجا چیزی تایپ کن..." className='px-4 outline-none' value={searchQuery}
                             onChange={(e) => updateSearchQuery(e.target.value)}></input>
                     </div>

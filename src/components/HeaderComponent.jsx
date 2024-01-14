@@ -28,11 +28,11 @@ const HeaderComponent = () => {
     return (
         <header className=' w-full h-fit '>
 
-            {/* search burger */}
+            {/* search for products from api */}
             {isSearchBurgerVisible && (
                 <div className={`bg-footer-blue h-40 pt-10 ${isSearchBurgerVisible ? 'block' : 'hidden'}`}>
                     <div className='border-b border-b-gray-300 w-11/12 h-1/2 mx-auto flex justify-between'>
-                        {/* close search burger */}
+                        {/*  search close button for products from api */}
                         <button type='button' onClick={handleSearchBurgerClose}>
                             <svg className='mt-4' xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 384 512"><path fill="#ffffff" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
                         </button>
@@ -71,10 +71,10 @@ const HeaderComponent = () => {
                 </div>
                 <div className='flex'>
 
-                    {/* open search burger */}
+                    {/*  search open button for products from api */}
                     <button className='mt-4 mx-4 ' type="button" onClick={handleSearchBurgerOpen}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8087 18.1083C14.1669 19.3735 12.1194 20.1243 9.89908 20.1243C4.49649 20.1243 0.116821 15.6788 0.116821 10.195C0.116821 4.71115 4.49649 0.265625 9.89908 0.265625C15.3017 0.265625 19.6813 4.71115 19.6813 10.195C19.6813 12.4487 18.9416 14.527 17.6952 16.1935L22.8478 21.4236C23.3687 21.9524 23.3687 22.8097 22.8478 23.3384C22.3269 23.8672 21.4823 23.8672 20.9613 23.3384L15.8087 18.1083ZM17.0134 10.195C17.0134 14.1832 13.8282 17.4163 9.89908 17.4163C5.96992 17.4163 2.78471 14.1832 2.78471 10.195C2.78471 6.20674 5.96992 2.97363 9.89908 2.97363C13.8282 2.97363 17.0134 6.20674 17.0134 10.195Z" fill="#000" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M15.8087 18.1083C14.1669 19.3735 12.1194 20.1243 9.89908 20.1243C4.49649 20.1243 0.116821 15.6788 0.116821 10.195C0.116821 4.71115 4.49649 0.265625 9.89908 0.265625C15.3017 0.265625 19.6813 4.71115 19.6813 10.195C19.6813 12.4487 18.9416 14.527 17.6952 16.1935L22.8478 21.4236C23.3687 21.9524 23.3687 22.8097 22.8478 23.3384C22.3269 23.8672 21.4823 23.8672 20.9613 23.3384L15.8087 18.1083ZM17.0134 10.195C17.0134 14.1832 13.8282 17.4163 9.89908 17.4163C5.96992 17.4163 2.78471 14.1832 2.78471 10.195C2.78471 6.20674 5.96992 2.97363 9.89908 2.97363C13.8282 2.97363 17.0134 6.20674 17.0134 10.195Z" fill="#000" />
                         </svg>
                     </button>
 
@@ -127,7 +127,7 @@ const HeaderComponent = () => {
                         <ul className='text-right list-none relative w-[600px] mt-10 p-2'>
                             <li className='border-b border-b-gray-500 py-4'>
                                 <input className=' absolute hidden' type="checkbox" id="d0" name="r"></input>
-                                <label className='flex justify-between' For="d0">
+                                <label className='flex justify-between' htmlFor="d0">
                                     <p className='font-bold text-lg'> خانه </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
@@ -138,7 +138,7 @@ const HeaderComponent = () => {
 
                             <li className='border-b border-b-gray-500 py-4'>
                                 <input className='hidden absolute' type="checkbox" id="d1" name="r"></input>
-                                <label className='flex justify-between' For="d1">
+                                <label className='flex justify-between' htmlFor="d1">
                                     <p className='font-bold text-lg'> صفحات  </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
@@ -149,7 +149,7 @@ const HeaderComponent = () => {
 
                             <li className='border-b border-b-gray-500 py-4 '>
                                 <input className='hidden absolute' type="checkbox" id="d2" name="r"></input>
-                                <label className='flex justify-between' For="d2">
+                                <label className='flex justify-between' htmlFor="d2">
                                     <p className='font-bold text-lg'>   وبلاگ </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
@@ -160,7 +160,7 @@ const HeaderComponent = () => {
 
                             <li className='border-b border-b-gray-500 py-4 '>
                                 <input className='hidden absolute' type="checkbox" id="d3" name="r"></input>
-                                <label className='flex justify-between' For="d3">
+                                <label className='flex justify-between' htmlFor="d3">
                                     <p className='font-bold text-lg'>   نمونه کارها  </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
