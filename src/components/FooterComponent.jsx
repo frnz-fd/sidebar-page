@@ -50,17 +50,17 @@ const FooterComponent = () => {
                     </section>
 
                     <section className='max-w-[700px] min-w-[400px] '>
-                        <h3 className='text-gray-300 text-2xl font-bold text-right'>
+                        <h3 className='text-gray-300 text-2xl font-bold text-right max-ssm:w-9/12 max-ssm:text-xl'>
                             از آخرین به روز رسانی های حقوقی، مقالات روشنگر و تحلیل های تخصصی مطلع باشید.
                         </h3>
-                        <div className='flex mt-10 justify-between'>
+                        <div className='flex mt-10 justify-between max-ssm:w-9/12'>
 
                             <input placeholder="اینجا چیزی تایپ کن..." className='px-2 placeholder:text-white outline-none bg-inherit'></input>
                             <div className='p-2 mt-2'>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="10" viewBox="0 0 320 512"><path fill="#ffffff" d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" /></svg>
                             </div>
                         </div>
-                        <hr className='my-4 mx-2 border-gray-300'></hr>
+                        <hr className='my-4 mx-2 border-gray-300 max-ssm:w-10/12'></hr>
                     </section>
                 </article>
 

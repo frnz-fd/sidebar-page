@@ -11,11 +11,11 @@ export default {
       'xmd': '950px',
       'md': '768px',
       'sm': '640px',
-
+      'ssm': '415px',
     },
     extend: {
       backgroundImage: {
-        'hamburger-pattern': "url('./public/pictures/orken-pattern-background-image-scaled.jpg')",
+        'hamburger-pattern': "url('/pictures/orken-pattern-background-image-scaled.jpg')",
 
       },
       colors: {

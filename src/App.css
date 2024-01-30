@@ -4,7 +4,7 @@
   direction: rtl;
 }
 
- input:checked  ~ .answer{
+input:checked  ~ .answer{
   height:fit-content;
   margin-top:7px;
   display:block;

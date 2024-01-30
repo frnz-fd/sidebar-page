@@ -1,7 +1,9 @@
 // HeaderComponent.jsx //
 import React, { useState } from 'react';
 
+
 const HeaderComponent = () => {
+    // const { searchQuery, selectedFilter, updateSearchQuery, updateFilter } = useSearch();
     const [isMenuOpen, setMenuOpen] = useState(false);
     const [isSearchBurgerVisible, setSearchBurgerVisible] = useState(false);
 
@@ -33,18 +35,26 @@ const HeaderComponent = () => {
                 <div className={`bg-footer-blue h-40 pt-10 ${isSearchBurgerVisible ? 'block' : 'hidden'}`}>
                     <div className='border-b border-b-gray-300 w-11/12 h-1/2 mx-auto flex justify-between'>
                         {/*  search close button for products from api */}
+
+                        <input className='placeholder-gray-200 text-gray-200 text-xl bg-inherit outline-none'
+                            type="text"
+                            placeholder='محصولات را جستجو کنید...'
+                        // value={searchQuery}
+                        // onChange={(e) => updateSearchQuery(e.target.value)} 
+                        >
+
+                        </input>
                         <button type='button' onClick={handleSearchBurgerClose}>
                             <svg className='mt-4' xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 384 512"><path fill="#ffffff" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
                         </button>
-                        <input className='placeholder-gray-200 text-gray-200 text-xl bg-inherit outline-none' type="text" placeholder='محصولات را جستجو کنید...' ></input>
                     </div>
                 </div>
             )}
 
 
             {/* contact-us */}
-            <section className="max-md: flex justify-end gap-4 py-4 px-20 max-xxl:px-5 border-b border-b-gray-200">
-                <p > نیویورک،بروکلین، 3453</p>
+            <section className="max-md: flex justify-end gap-4 py-4 px-20 max-xxl:px-5 border-b border-b-gray-200 text-sm font-bold text-gray-600">
+                <p className=''> نیویورک،بروکلین، 3453</p>
                 <a href="tel:(+1)123-456-789">123-456-789(+1) </a>
 
             </section>
@@ -55,11 +65,11 @@ const HeaderComponent = () => {
                 {/* navbar */}
 
                 <ul className='flex w-fit gap-4 items-center text-lg font-semibold max-xl:hidden '>
-                    <li className='cursor-pointer'>خانه</li>
-                    <li className='cursor-pointer'>صفحات</li>
-                    <li className='cursor-pointer'>نمونه کارها</li>
-                    <li className='cursor-pointer'>بلاگ</li>
-                    <li className='cursor-pointer'>ویژگی ها</li>
+                    <li className='cursor-pointer hover:text-blue-600'>خانه</li>
+                    <li className='cursor-pointer hover:text-blue-600'>صفحات</li>
+                    <li className='cursor-pointer hover:text-blue-600'>نمونه کارها</li>
+                    <li className='cursor-pointer hover:text-blue-600'>بلاگ</li>
+                    <li className='cursor-pointer hover:text-blue-600'>ویژگی ها</li>
                 </ul>
 
                 {/* title */}
@@ -128,7 +138,7 @@ const HeaderComponent = () => {
                             <li className='border-b border-b-gray-500 py-4'>
                                 <input className=' absolute hidden' type="checkbox" id="d0" name="r"></input>
                                 <label className='flex justify-between' htmlFor="d0">
-                                    <p className='font-bold text-lg'> خانه </p>
+                                    <p className='font-bold text-lg cursor-pointer'> خانه </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
                                 <div className="answer transition-all duration-300 ease-in-out p-2 hidden"> صفحه اصلی </div>
@@ -139,7 +149,7 @@ const HeaderComponent = () => {
                             <li className='border-b border-b-gray-500 py-4'>
                                 <input className='hidden absolute' type="checkbox" id="d1" name="r"></input>
                                 <label className='flex justify-between' htmlFor="d1">
-                                    <p className='font-bold text-lg'> صفحات  </p>
+                                    <p className='font-bold text-lg cursor-pointer'> صفحات  </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
                                 <div className="answer transition-all duration-300 ease-in-out p-2 hidden">  درباره شرکت  </div>
@@ -150,7 +160,7 @@ const HeaderComponent = () => {
                             <li className='border-b border-b-gray-500 py-4 '>
                                 <input className='hidden absolute' type="checkbox" id="d2" name="r"></input>
                                 <label className='flex justify-between' htmlFor="d2">
-                                    <p className='font-bold text-lg'>   وبلاگ </p>
+                                    <p className='font-bold text-lg cursor-pointer'>   وبلاگ </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
                                 <div className="answer transition-all duration-300 ease-in-out p-2 hidden">   نوار کناری وبلاگ  </div>
@@ -161,7 +171,7 @@ const HeaderComponent = () => {
                             <li className='border-b border-b-gray-500 py-4 '>
                                 <input className='hidden absolute' type="checkbox" id="d3" name="r"></input>
                                 <label className='flex justify-between' htmlFor="d3">
-                                    <p className='font-bold text-lg'>   نمونه کارها  </p>
+                                    <p className='font-bold text-lg cursor-pointer'>   نمونه کارها  </p>
                                     <svg className='mt-2' viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" ><path d="M21.266 7.302a.75.75 0 0 1 1.037 1.08l-.069.066-9.75 8.25a.75.75 0 0 1-.89.058l-.078-.058-9.75-8.25a.75.75 0 0 1 .893-1.202l.075.056L12 15.142l9.266-7.84Z"></path></svg>
                                 </label>
                                 <div className="answer transition-all duration-300 ease-in-out p-2 hidden">    استاندارد تمونه کارها   </div>
@@ -169,7 +179,7 @@ const HeaderComponent = () => {
                                 <div className="answer transition-all duration-300 ease-in-out p-2 hidden" >   تموته کارها تک   </div>
                             </li>
 
-                            <li className='border-b border-b-gray-500 py-4 font-bold text-lg'> امکانات </li>
+                            <li className='border-b border-b-gray-500 py-4 font-bold text-lg cursor-pointer'> امکانات </li>
                         </ul>
 
 
