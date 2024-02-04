@@ -4,8 +4,17 @@
   direction: rtl;
 }
 
+.answer{
+  display:none;
+}
+
 input:checked  ~ .answer{
   height:fit-content;
   margin-top:7px;
   display:block;
+  text-align: right;
+  padding: 10px;
+
 }
+
+

@@ -18,6 +18,7 @@ const MainComponent = () => {
     const [page, setPage] = useState(1);
     const [perPage] = useState(10);
     const [selectParam, setSelectParam] = useState('title,description,price,category,thumbnail');
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +37,7 @@ const MainComponent = () => {
                 }));
 
                 setProducts(productsData);
+                setTotal(productsResponse.data.total);
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {
@@ -63,8 +65,39 @@ const MainComponent = () => {
         }
     }, [location.search, page, perPage, selectParam]);
 
+    const totalPages = useMemo(() => Math.ceil(total / perPage), [total, perPage]);
 
-    // Find the top five categories with the most products
+    const handlePagination = async (pageNumber) => {
+        try {
+            setLoading(true);
+            const skip = (pageNumber - 1) * perPage;
+            const paginationUrl = `https://dummyjson.com/products?limit=${perPage}&skip=${skip}&select=${selectParam}`;
+            const response = await axios.get(paginationUrl);
+    
+            if (response.status === 200) {
+                const responseData = response.data;
+                const paginatedData = responseData.products.map(product => ({
+                    ...product,
+                    thumbnailUrl: product.thumbnail,
+                }));
+    
+                setProducts(paginatedData);
+                setPage(pageNumber);
+    
+                // Update the URL with the new page query parameter
+                const updatedUrl = `${location.pathname}?page=${pageNumber}${location.search}`;
+                navigate(updatedUrl, { replace: true });
+            } else {
+                console.error('Invalid response status:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching paginated data:', error.response?.data || error.message || error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+
     const topFiveCategories = useMemo(() => {
         return categories
             .map(category => ({
@@ -90,6 +123,7 @@ const MainComponent = () => {
         setSelectedCategory(category);
         navigate(category !== 'all' ? `?category=${category}` : '/');
     };
+
     const handleSearchWithParams = async () => {
         try {
             if (searchQuery.trim() === '') {
@@ -148,32 +182,7 @@ const MainComponent = () => {
 
 
 
-    const handlePagination = async (direction) => {
-        try {
-            setLoading(true);
-            const skip = direction === 'prev' ? Math.max(page - 2, 0) * perPage : page * perPage;
-            const paginationUrl = `https://dummyjson.com/products?limit=${perPage}&skip=${skip}&select=${selectParam}`;
-            const response = await axios.get(paginationUrl);
 
-            if (response.status === 200) {
-                const responseData = response.data;
-                const paginatedData = responseData.products.map(product => ({
-                    ...product,
-                    thumbnailUrl: product.thumbnail,
-                }));
-
-                setProducts(paginatedData);
-                setPage(prevPage => (direction === 'prev' ? prevPage - 1 : prevPage + 1));
-            } else {
-                console.error('Invalid response status:', response.status);
-            }
-        } catch (error) {
-            console.error('Error fetching paginated data:', error.response?.data || error.message || error);
-        } finally {
-            setLoading(false);
-        }
-    };
- 
     return (
         <div className='max-w-[1265px] max-xl:max-w-[900px] mx-auto max-xmd:px-4 max-xl:mt-10 max-ssm:px-1'>
             <ul className='flex w-11/12 mx-auto py-4 mt-10 max-md:mt-2 mb-14 max-xl:mb-6 '>
@@ -185,7 +194,7 @@ const MainComponent = () => {
             </ul>
 
             <div className='flex justify-between gap-5 px-2 max-xl:block w-11/12 mx-auto'>
-                <h1 className='font-black text-3xl max-xl:text-right max-xl:pb-10 w-[350px] '>نوار کناری وبلاگ</h1>
+                <h1 className='font-black text-3xl max-xl:text-right max-xl:pb-10 max-w-[350px] '>نوار کناری وبلاگ</h1>
                 <ul className='flex flex-wrap gap-10 font-bold text-gray-400 '>
                     <li
                         className={`cursor-pointer hover:text-orange-600 w-fit ${selectedCategory === 'all' ? 'text-black' : ''}`}
@@ -209,7 +218,7 @@ const MainComponent = () => {
                 {/* Postcards section */}
                 {displayProducts.length > 0 ? (
                     // Display content based on selected category or search results
-                    <article className="max-w-[885px] gap-5 grid grid-cols-2 max-md:grid-cols-1 max-md:grid max-md:justify-items-center  max-xl:mx-auto">
+                    <article className="max-w-[885px] gap-5 grid grid-cols-2 grid-rows-3 max-md:grid-cols-1 max-md:grid max-md:justify-items-center  max-xl:mx-auto">
                         {searchQuery.trim() === '' ? (
                             // Display default content based on selected category
                             selectedCategoryProducts.map(product => (
@@ -239,42 +248,38 @@ const MainComponent = () => {
                             // Display message when no results are found for the current search query
                             loading ? (
                                 // Display loading message while fetching search results
-                                <p className="text-center text-gray-500 mt-6 min-w-[400px]">Loading...</p>
+                                <p className="text-center text-gray-500 mt-6 max-w-[350px]">Loading...</p>
                             ) : (
                                 // Display message when no results are found for the current search query
-                                <p className="text-center text-gray-500 mt-6 min-w-[400px]">No results found for "{searchQuery}"</p>
+                                <p className="text-center text-gray-500 mt-6 max-w-[350px]">No results found for "{searchQuery}"</p>
                             )
                         )}
                         {/* Pagination */}
-                        <div className="flex justify-center gap-5 mt-6">
-                            <button
-                                onClick={() => handlePagination('prev')}
-                                disabled={page === 1}
-                                className="px-4 py-2 mr-2 bg-gray-300 rounded hover:bg-orange-300 hover:text-blue-600 font-bold"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={() => handlePagination('next')}
-                                disabled={products.length < perPage}
-                                className="px-4 py-2 ml-2 bg-gray-300 rounded hover:bg-orange-300 hover:text-blue-600 font-bold"
-                            >
-                                Next
-                            </button>
+                        <div className="grid grid-cols-10 col-span-1 gap-5 mt-6">
+                            {Array.from({ length: totalPages }, (_, index) => index + 1).map(pageNumber => (
+                                <button
+                                    key={pageNumber}
+                                    onClick={() => handlePagination(pageNumber)}
+                                    disabled={pageNumber === page}
+                                    className={`p-3  w-fit ${pageNumber === page ? 'bg-orange-300 text-blue-600' : 'bg-gray-300 hover:bg-orange-300 hover:text-blue-600'} rounded font-bold`}
+                                >
+                                    {pageNumber}
+                                </button>
+                            ))}
                         </div>
                     </article>
                 ) : (
                     // Display loading message while fetching default content
                     loading ? (
-                        <p className="text-center text-gray-500 mt-6 min-w-[400px]">Loading...</p>
+                        <p className="text-center text-gray-500 mt-6 max-w-[350px]">Loading...</p>
                     ) : (
                         // Display message when no default content is found for the selected category
-                        <p className="text-center text-gray-500 mt-6 min-w-[400px]">No results found for the selected category</p>
+                        <p className="text-center text-gray-500 mt-6 max-w-[350px]">No results found for the selected category</p>
                     )
                 )}
 
                 {/* Sidebar section */}
-                <aside className='min-w-[367px] max-w-[367px] max-xl:max-w-full max-xl:px-14 max-xmd:px-0 max-xl:mt-14'>
+                <aside className='min-w-[367px] max-w-[367px] max-ssm:min-w-[300px] max-xl:max-w-full max-xl:px-14 max-xmd:px-0 max-xl:mt-14'>
                     <h2 className='w-full text-right text-2xl font-semibold'>جستجو</h2>
                     <div className='flex mt-10'>
                         <button type='button' className='px-2' onClick={handleSearchButtonClick}>
@@ -346,7 +351,7 @@ const MainComponent = () => {
                 </aside>
             </main>
 
-           
+
 
         </div>
     );
