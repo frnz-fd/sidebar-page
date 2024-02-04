@@ -6,7 +6,7 @@ const PostCardComponent = ({ id, title, thumbnailUrl, category, price}) => {
   return (
     <section className="max-w-[430px] p-4 bg-blue-100 rounded-xl">
       <picture className='aspect-square max-w-[350px] cursor-pointer mx-auto rounded-lg block overflow-hidden '>
-        <img style={{ maxWidth: '105%' }} className='object-fill h-full rounded-lg hover:translate-x-2 hover:rounded-lg ease-in duration-300 transition-transform duration-500 ease-in-out' src={thumbnailUrl} alt="Product Thumbnail" />
+        <img style={{ maxWidth: '105%' }} className='object-cover h-full rounded-lg hover:translate-x-2 hover:rounded-lg ease-in duration-300 transition-transform duration-500 ease-in-out' src={thumbnailUrl} alt="Product Thumbnail" />
       </picture>
       <div className='flex justify-center'>
         <span className='leading-10 text-blue-900 font-semibold py-1'>{category}</span>

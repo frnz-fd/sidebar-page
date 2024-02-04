@@ -1,14 +1,18 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 import PostCardComponent from './PostCardComponent';
 import SmallPostCardComponent from './SmallPostCardComponent';
 
 
+
 const MainComponent = () => {
+    // React Router hooks for navigation and location
     const navigate = useNavigate();
     const location = useLocation();
 
+    // State variables
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -16,76 +20,76 @@ const MainComponent = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const [perPage] = useState(10);
+    const perPage = 10;
     const [selectParam, setSelectParam] = useState('title,description,price,category,thumbnail');
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const [categoriesResponse, productsResponse] = await Promise.all([
-                    axios.get('https://dummyjson.com/products/categories'),
-                    axios.get(`https://dummyjson.com/products?limit=${perPage}&skip=${(page - 1) * perPage}&select=${selectParam}`)
-                ]);
-
-                setCategories(categoriesResponse.data);
-
-                const productsData = productsResponse.data.products.map(product => ({
-                    ...product,
-                    thumbnailUrl: product.thumbnail,
-                }));
-
-                setProducts(productsData);
-                setTotal(productsResponse.data.total);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchData();
+        updateURLParameters();
+    }, [location.search, page, selectParam]);
 
+    // Function to fetch data from the API
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            // Simultaneously fetch categories and products
+            const [categoriesResponse, productsResponse] = await Promise.all([
+                axios.get('https://dummyjson.com/products/categories'),
+                axios.get(`https://dummyjson.com/products?limit=${perPage}&skip=${(page - 1) * perPage}&select=${selectParam}`)
+            ]);
+            // Extract and process data
+            setCategories(categoriesResponse.data);
+
+            const productsData = productsResponse.data.products.map(product => ({
+                ...product,
+                thumbnailUrl: product.thumbnail,
+            }));
+
+            setProducts(productsData);
+            setTotal(productsResponse.data.total);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Function to update state based on URL parameters
+    const updateURLParameters = () => {
         const params = new URLSearchParams(location.search);
-        const categoryParam = params.get('category');
-        const searchParam = params.get('search');
+        const categoryParam = params.get('category') || 'all';
+        const searchParam = params.get('search') || '';
         const selectParamFromQuery = params.get('select') || 'title,description,price,category,thumbnail';
 
         setSelectParam(selectParamFromQuery);
+        setSelectedCategory(categoryParam);
+        setSearchQuery(searchParam);
+    };
 
-        if (categoryParam !== null) {
-            setSelectedCategory(categoryParam);
-        } else {
-            setSelectedCategory('all');
-        }
-
-        if (searchParam !== null) {
-            setSearchQuery(searchParam);
-        }
-    }, [location.search, page, perPage, selectParam]);
-
+    // Memoized total number of pages for pagination
     const totalPages = useMemo(() => Math.ceil(total / perPage), [total, perPage]);
 
+    // Function to handle pagination
     const handlePagination = async (pageNumber) => {
         try {
             setLoading(true);
             const skip = (pageNumber - 1) * perPage;
             const paginationUrl = `https://dummyjson.com/products?limit=${perPage}&skip=${skip}&select=${selectParam}`;
             const response = await axios.get(paginationUrl);
-    
+
             if (response.status === 200) {
                 const responseData = response.data;
                 const paginatedData = responseData.products.map(product => ({
                     ...product,
                     thumbnailUrl: product.thumbnail,
                 }));
-    
+
                 setProducts(paginatedData);
                 setPage(pageNumber);
-    
+
                 // Update the URL with the new page query parameter
-                const updatedUrl = `${location.pathname}?page=${pageNumber}${location.search}`;
+                const updatedUrl = `${location.pathname}?page=${pageNumber}${location.search.replace(/([&?])page=\d+/i, '')}`;
                 navigate(updatedUrl, { replace: true });
             } else {
                 console.error('Invalid response status:', response.status);
@@ -96,8 +100,14 @@ const MainComponent = () => {
             setLoading(false);
         }
     };
-    
 
+    // Function to handle page click in pagination
+    const handlePageClick = (data) => {
+        const selectedPage = data.selected + 1;
+        handlePagination(selectedPage);
+    };
+
+    // Memoized top five categories based on product count
     const topFiveCategories = useMemo(() => {
         return categories
             .map(category => ({
@@ -109,12 +119,14 @@ const MainComponent = () => {
             .map(category => category.name);
     }, [categories, products]);
 
+     // Memoized products based on selected category
     const selectedCategoryProducts = useMemo(() => {
         return selectedCategory === 'all'
             ? products
             : products.filter(product => product.category === selectedCategory);
     }, [selectedCategory, products]);
 
+    // Memoized products to display, considering search results
     const displayProducts = useMemo(() => {
         return searchResults.length > 0 ? searchResults : selectedCategoryProducts;
     }, [searchResults, selectedCategoryProducts]);
@@ -181,8 +193,6 @@ const MainComponent = () => {
     };
 
 
-
-
     return (
         <div className='max-w-[1265px] max-xl:max-w-[900px] mx-auto max-xmd:px-4 max-xl:mt-10 max-ssm:px-1'>
             <ul className='flex w-11/12 mx-auto py-4 mt-10 max-md:mt-2 mb-14 max-xl:mb-6 '>
@@ -218,55 +228,70 @@ const MainComponent = () => {
                 {/* Postcards section */}
                 {displayProducts.length > 0 ? (
                     // Display content based on selected category or search results
-                    <article className="max-w-[885px] gap-5 grid grid-cols-2 grid-rows-3 max-md:grid-cols-1 max-md:grid max-md:justify-items-center  max-xl:mx-auto">
-                        {searchQuery.trim() === '' ? (
-                            // Display default content based on selected category
-                            selectedCategoryProducts.map(product => (
-                                <PostCardComponent
-                                    key={product.id}
-                                    id={product.id}
-                                    title={product.title}
-                                    description={product.description}
-                                    price={product.price}
-                                    category={product.category}
-                                    thumbnailUrl={product.thumbnailUrl}
-                                />
-                            ))
-                        ) : searchResults.length > 0 ? (
-                            // Display search results when available
-                            searchResults.map(product => (
-                                <PostCardComponent
-                                    key={product.id}
-                                    title={product.title}
-                                    description={product.description}
-                                    price={product.price}
-                                    category={product.category}
-                                    thumbnailUrl={product.thumbnailUrl}
-                                />
-                            ))
-                        ) : (
-                            // Display message when no results are found for the current search query
-                            loading ? (
-                                // Display loading message while fetching search results
-                                <p className="text-center text-gray-500 mt-6 max-w-[350px]">Loading...</p>
+                    <article className='flex flex-col'>
+                        <div className="max-w-[885px] gap-5 grid grid-cols-2 grid-rows-3 max-md:grid-cols-1 max-md:grid max-md:justify-items-center  max-xl:mx-auto">
+
+                            {searchQuery.trim() === '' ? (
+                                // Display default content based on selected category
+                                selectedCategoryProducts.map(product => (
+                                    <PostCardComponent
+                                        key={product.id}
+                                        id={product.id}
+                                        title={product.title}
+                                        description={product.description}
+                                        price={product.price}
+                                        category={product.category}
+                                        thumbnailUrl={product.thumbnailUrl}
+                                    />
+                                ))
+                            ) : searchResults.length > 0 ? (
+                                // Display search results when available
+                                searchResults.map(product => (
+                                    <PostCardComponent
+                                        key={product.id}
+                                        title={product.title}
+                                        description={product.description}
+                                        price={product.price}
+                                        category={product.category}
+                                        thumbnailUrl={product.thumbnailUrl}
+                                    />
+                                ))
                             ) : (
                                 // Display message when no results are found for the current search query
-                                <p className="text-center text-gray-500 mt-6 max-w-[350px]">No results found for "{searchQuery}"</p>
-                            )
-                        )}
-                        {/* Pagination */}
-                        <div className="grid grid-cols-10 col-span-1 gap-5 mt-6">
-                            {Array.from({ length: totalPages }, (_, index) => index + 1).map(pageNumber => (
-                                <button
-                                    key={pageNumber}
-                                    onClick={() => handlePagination(pageNumber)}
-                                    disabled={pageNumber === page}
-                                    className={`p-3  w-fit ${pageNumber === page ? 'bg-orange-300 text-blue-600' : 'bg-gray-300 hover:bg-orange-300 hover:text-blue-600'} rounded font-bold`}
-                                >
-                                    {pageNumber}
-                                </button>
-                            ))}
+                                loading ? (
+                                    // Display loading message while fetching search results
+                                    <p className="text-center text-gray-500 mt-6 max-w-[350px]">Loading...</p>
+                                ) : (
+                                    // Display message when no results are found for the current search query
+                                    <p className="text-center text-gray-500 mt-6 max-w-[350px]">No results found for "{searchQuery}"</p>
+                                )
+                            )}
                         </div>
+
+                        {/* Pagination */}
+                        <div>
+
+                            <ReactPaginate
+                                previousLabel={'prev'}
+                                nextLabel={'next'}
+                                breakLabel={'...'}
+                                pageCount={totalPages}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={2}
+                                onPageChange={handlePageClick}
+                                containerClassName={'flex justify-center mt-8 space-x-1 justify-center'}
+                                pageClassName={'p-2 cursor-pointer border '}
+                                pageLinkClassName={'w-7 h-7 flex items-center justify-center bg-white border text-gray-700  transition duration-300 hover:bg-gray-200'}
+                                activeClassName={'bg-blue-500 text-white'}
+                                previousClassName={'p-2 mx-1 cursor-pointer border  text-sm'}
+                                previousLinkClassName={'w-7 h-7 flex items-center justify-center bg-white border text-gray-700  transition duration-300 hover:bg-gray-200'}
+                                nextClassName={'p-2 cursor-pointer border '}
+                                nextLinkClassName={'w-7 h-7 flex items-center justify-center bg-white border text-gray-700  transition duration-300 hover:bg-gray-200'}
+                                breakClassName={'p-2 cursor-pointer border '}
+                                breakLinkClassName={'w-7 h-7 flex items-center justify-center bg-white border text-gray-700  transition duration-300 hover:bg-gray-200'}
+                            />
+                        </div>
+
                     </article>
                 ) : (
                     // Display loading message while fetching default content
